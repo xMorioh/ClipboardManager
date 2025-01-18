@@ -1,4 +1,4 @@
-# Morioh's Clipbaord Manager
+# Morioh's Clipboard Manager
 # [Download the latest version here](https://github.com/xMorioh/ClipboardManager/releases/latest)
 # [Check out my other Projects on my Website](https://xmorioh.gitlab.io/index.html)
 
