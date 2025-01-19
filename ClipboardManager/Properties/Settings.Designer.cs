@@ -94,5 +94,185 @@ namespace ClipboardManager.Properties {
                 this["comboBox2"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBox3_1 {
+            get {
+                return ((string)(this["textBox3_1"]));
+            }
+            set {
+                this["textBox3_1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBox3_2 {
+            get {
+                return ((string)(this["textBox3_2"]));
+            }
+            set {
+                this["textBox3_2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string comboBox3 {
+            get {
+                return ((string)(this["comboBox3"]));
+            }
+            set {
+                this["comboBox3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBox4_1 {
+            get {
+                return ((string)(this["textBox4_1"]));
+            }
+            set {
+                this["textBox4_1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBox4_2 {
+            get {
+                return ((string)(this["textBox4_2"]));
+            }
+            set {
+                this["textBox4_2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string comboBox4 {
+            get {
+                return ((string)(this["comboBox4"]));
+            }
+            set {
+                this["comboBox4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBox5_1 {
+            get {
+                return ((string)(this["textBox5_1"]));
+            }
+            set {
+                this["textBox5_1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBox5_2 {
+            get {
+                return ((string)(this["textBox5_2"]));
+            }
+            set {
+                this["textBox5_2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string comboBox5 {
+            get {
+                return ((string)(this["comboBox5"]));
+            }
+            set {
+                this["comboBox5"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBox6_1 {
+            get {
+                return ((string)(this["textBox6_1"]));
+            }
+            set {
+                this["textBox6_1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBox6_2 {
+            get {
+                return ((string)(this["textBox6_2"]));
+            }
+            set {
+                this["textBox6_2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string comboBox6 {
+            get {
+                return ((string)(this["comboBox6"]));
+            }
+            set {
+                this["comboBox6"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBox7_1 {
+            get {
+                return ((string)(this["textBox7_1"]));
+            }
+            set {
+                this["textBox7_1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string textBox7_2 {
+            get {
+                return ((string)(this["textBox7_2"]));
+            }
+            set {
+                this["textBox7_2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string comboBox7 {
+            get {
+                return ((string)(this["comboBox7"]));
+            }
+            set {
+                this["comboBox7"] = value;
+            }
+        }
     }
 }
