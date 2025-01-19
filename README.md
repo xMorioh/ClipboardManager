@@ -17,6 +17,7 @@ This Application is made in .NET C# as a Forms Application.
 <br>
 
 **How to use this Application**:
+<br>
 In the first column you have the Text Field that defines the series of characters you want to application to search for
 <br>
 <br>
