@@ -74,7 +74,7 @@ namespace ClipboardManager
 
             // Create the NotifyIcon.
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            
+
             // The Icon property sets the icon that will appear
             // in the systray for this application.
             notifyIcon.Icon = this.Icon;
@@ -96,7 +96,7 @@ namespace ClipboardManager
         protected override void OnLoad(EventArgs e)
         {
             Visible = false;
-            Opacity = 0;
+            Opacity = 0.00;
 
             base.OnLoad(e);
         }
@@ -152,7 +152,6 @@ namespace ClipboardManager
             }
         }
 
-
         //Trimming Algorhythms START
         //Trim To End Of Line including the content to trim
         protected string ContentTrimToEnd(string OriginalContent, string ContentToExchange)
@@ -185,29 +184,20 @@ namespace ClipboardManager
 
                     for (var i = 0; i < TextBoxes1Content.Length; i++)
                     {
-                        string Algorythm                    = ComboBoxesContent.GetValue(i).ToString();
-                        string ContentToExchange            = TextBoxes1Content.GetValue(i).ToString();
+                        string Algorithm = ComboBoxesContent.GetValue(i).ToString();
                         List<string> ContentToExchangeArray = TextBoxes1Content.GetValue(i).ToString().Split(',').ToList();
-                        string ContentToBeExchangedWith     = TextBoxes2Content.GetValue(i).ToString();
+                        string ContentToBeExchangedWith = TextBoxes2Content.GetValue(i).ToString();
 
                         string OriginalContent = Clipboard.GetText();
-
-                        if (Algorythm == "ContentTrimToEnd")
-                            if (ContentToExchange != string.Empty && OriginalContent.Contains(ContentToExchange))
-                            {
-                                OriginalContent = ContentTrimToEnd(OriginalContent, ContentToExchange);
-                                System.Windows.Forms.Clipboard.SetText(OriginalContent);
-                            }
-
-                        //Make sure to add as much detail about your link as possible, otherwise it might conflict with other inputs
-                        //List<string> ContentToExchangeArray = new List<string>() { "//girlcockx.com", "//x.com", "//twitter.com" };
                         string ContentToExchangeInstance = ContentToExchangeArray.Find(x => OriginalContent.Contains(x));
-                        if (Algorythm == "ContentReplace")
-                            if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
-                            {
-                                OriginalContent = ContentReplace(OriginalContent, ContentToExchangeInstance, ContentToBeExchangedWith);
-                                System.Windows.Forms.Clipboard.SetText(OriginalContent);
-                            }
+
+                        if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
+                        {
+                            if (Algorithm == "ContentTrimToEnd")
+                                System.Windows.Forms.Clipboard.SetText(ContentTrimToEnd(OriginalContent, ContentToExchangeInstance));
+                            else if (Algorithm == "ContentReplace")
+                                System.Windows.Forms.Clipboard.SetText(ContentReplace(OriginalContent, ContentToExchangeInstance, ContentToBeExchangedWith));
+                        }
                     }
                     break;
                 default:
@@ -218,18 +208,18 @@ namespace ClipboardManager
 
 
         //FORM VARIABLES
-        public static string[] Algorhythms = new string[] { "ContentTrimToEnd", "ContentReplace" };
+        public static string[] Algorhithms = new string[] { "ContentTrimToEnd", "ContentReplace" };
 
         private void Form1_Load(object sender, EventArgs e)
         {
             _ClipboardViewerNext = SetClipboardViewer(this.Handle);
-            comboBox1.Items.AddRange(Algorhythms);
-            comboBox2.Items.AddRange(Algorhythms);
-            comboBox3.Items.AddRange(Algorhythms);
-            comboBox4.Items.AddRange(Algorhythms);
-            comboBox5.Items.AddRange(Algorhythms);
-            comboBox6.Items.AddRange(Algorhythms);
-            comboBox7.Items.AddRange(Algorhythms);
+            comboBox1.Items.AddRange(Algorhithms);
+            comboBox2.Items.AddRange(Algorhithms);
+            comboBox3.Items.AddRange(Algorhithms);
+            comboBox4.Items.AddRange(Algorhithms);
+            comboBox5.Items.AddRange(Algorhithms);
+            comboBox6.Items.AddRange(Algorhithms);
+            comboBox7.Items.AddRange(Algorhithms);
         }
 
 
@@ -338,7 +328,7 @@ namespace ClipboardManager
             Properties.Settings.Default.textBox6_1 = textBox6_1.Text;
             Properties.Settings.Default.Save();
         }
-        
+
         private void textBox6_2_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.textBox6_2 = textBox6_2.Text;
