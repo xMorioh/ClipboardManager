@@ -152,7 +152,7 @@ namespace ClipboardManager
             }
         }
 
-        //Trimming Algorhythms START
+        //Trimming Algorhithms START
         //Trim To End Of Line including the content to trim
         protected string ContentTrimToEnd(string OriginalContent, string ContentToExchange)
         {
@@ -169,7 +169,7 @@ namespace ClipboardManager
             OriginalContent = OriginalContent.Replace(ContentToExchange, ContentToBeExchangedWith);
             return OriginalContent;
         }
-        //Trimming Algorhythms END
+        //Trimming Algorhithms END
 
         protected override void WndProc(ref System.Windows.Forms.Message m)
         {
@@ -185,18 +185,33 @@ namespace ClipboardManager
                     for (var i = 0; i < TextBoxes1Content.Length; i++)
                     {
                         string Algorithm = ComboBoxesContent.GetValue(i).ToString();
-                        List<string> ContentToExchangeArray = TextBoxes1Content.GetValue(i).ToString().Split(',').ToList();
+                        List<string> ContentToExchangeList = TextBoxes1Content.GetValue(i).ToString().Split(',').ToList();
                         string ContentToBeExchangedWith = TextBoxes2Content.GetValue(i).ToString();
 
                         string OriginalContent = Clipboard.GetText();
-                        string ContentToExchangeInstance = ContentToExchangeArray.Find(x => OriginalContent.Contains(x));
+                        string ContentToExchangeInstance = ContentToExchangeList.Find(x => OriginalContent.Contains(x));
 
-                        if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
+                        if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null && OriginalContent != string.Empty && OriginalContent != null)
                         {
-                            if (Algorithm == "ContentTrimToEnd")
-                                System.Windows.Forms.Clipboard.SetText(ContentTrimToEnd(OriginalContent, ContentToExchangeInstance));
-                            else if (Algorithm == "ContentReplace")
-                                System.Windows.Forms.Clipboard.SetText(ContentReplace(OriginalContent, ContentToExchangeInstance, ContentToBeExchangedWith));
+                            //ContentTrimToEnd
+                            if (Algorithm == Algorhithms.GetValue(0).ToString())
+                            {
+                                OriginalContent = ContentTrimToEnd(OriginalContent, ContentToExchangeInstance);
+                                if (OriginalContent != string.Empty && OriginalContent != null)
+                                    System.Windows.Forms.Clipboard.SetText(OriginalContent);
+                                else
+                                    System.Windows.Forms.Clipboard.Clear();
+                            }
+
+                            //ContentReplace
+                            else if (Algorithm == Algorhithms.GetValue(1).ToString())
+                            {
+                                OriginalContent = ContentReplace(OriginalContent, ContentToExchangeInstance, ContentToBeExchangedWith);
+                                if (OriginalContent != string.Empty && OriginalContent != null)
+                                    System.Windows.Forms.Clipboard.SetText(OriginalContent);
+                                else
+                                    System.Windows.Forms.Clipboard.Clear();
+                            }
                         }
                     }
                     break;

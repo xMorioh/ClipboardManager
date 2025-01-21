@@ -45,12 +45,12 @@
             this.textBox6_1 = new System.Windows.Forms.TextBox();
             this.textBox6_2 = new System.Windows.Forms.TextBox();
             this.textBox7_1 = new System.Windows.Forms.TextBox();
-            this.textBox7_2 = new System.Windows.Forms.TextBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.comboBox6 = new System.Windows.Forms.ComboBox();
             this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.textBox7_2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -65,16 +65,16 @@
             // 
             // textBox1_2
             // 
-            this.textBox1_2.Location = new System.Drawing.Point(150, 3);
+            this.textBox1_2.Location = new System.Drawing.Point(149, 3);
             this.textBox1_2.Name = "textBox1_2";
-            this.textBox1_2.Size = new System.Drawing.Size(140, 20);
+            this.textBox1_2.Size = new System.Drawing.Size(138, 20);
             this.textBox1_2.TabIndex = 1;
             this.textBox1_2.TextChanged += new System.EventHandler(this.textBox1_2_TextChanged);
             // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(296, 3);
+            this.comboBox1.Location = new System.Drawing.Point(293, 3);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 2;
@@ -90,16 +90,16 @@
             // 
             // textBox2_2
             // 
-            this.textBox2_2.Location = new System.Drawing.Point(150, 27);
+            this.textBox2_2.Location = new System.Drawing.Point(149, 27);
             this.textBox2_2.Name = "textBox2_2";
-            this.textBox2_2.Size = new System.Drawing.Size(140, 20);
+            this.textBox2_2.Size = new System.Drawing.Size(138, 20);
             this.textBox2_2.TabIndex = 4;
             this.textBox2_2.TextChanged += new System.EventHandler(this.textBox2_2_TextChanged);
             // 
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(296, 27);
+            this.comboBox2.Location = new System.Drawing.Point(293, 27);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(121, 21);
             this.comboBox2.TabIndex = 5;
@@ -110,7 +110,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.22831F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.77169F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 126F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 129F));
             this.tableLayoutPanel1.Controls.Add(this.comboBox2, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.textBox2_2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.comboBox1, 2, 0);
@@ -156,9 +156,9 @@
             // 
             // textBox3_2
             // 
-            this.textBox3_2.Location = new System.Drawing.Point(150, 51);
+            this.textBox3_2.Location = new System.Drawing.Point(149, 51);
             this.textBox3_2.Name = "textBox3_2";
-            this.textBox3_2.Size = new System.Drawing.Size(140, 20);
+            this.textBox3_2.Size = new System.Drawing.Size(138, 20);
             this.textBox3_2.TabIndex = 7;
             this.textBox3_2.TextChanged += new System.EventHandler(this.textBox3_2_TextChanged);
             // 
@@ -172,9 +172,9 @@
             // 
             // textBox4_2
             // 
-            this.textBox4_2.Location = new System.Drawing.Point(150, 75);
+            this.textBox4_2.Location = new System.Drawing.Point(149, 75);
             this.textBox4_2.Name = "textBox4_2";
-            this.textBox4_2.Size = new System.Drawing.Size(140, 20);
+            this.textBox4_2.Size = new System.Drawing.Size(138, 20);
             this.textBox4_2.TabIndex = 9;
             this.textBox4_2.TextChanged += new System.EventHandler(this.textBox4_2_TextChanged);
             // 
@@ -188,9 +188,9 @@
             // 
             // textBox5_2
             // 
-            this.textBox5_2.Location = new System.Drawing.Point(150, 99);
+            this.textBox5_2.Location = new System.Drawing.Point(149, 99);
             this.textBox5_2.Name = "textBox5_2";
-            this.textBox5_2.Size = new System.Drawing.Size(140, 20);
+            this.textBox5_2.Size = new System.Drawing.Size(138, 20);
             this.textBox5_2.TabIndex = 11;
             this.textBox5_2.TextChanged += new System.EventHandler(this.textBox5_2_TextChanged);
             // 
@@ -204,9 +204,9 @@
             // 
             // textBox6_2
             // 
-            this.textBox6_2.Location = new System.Drawing.Point(150, 123);
+            this.textBox6_2.Location = new System.Drawing.Point(149, 123);
             this.textBox6_2.Name = "textBox6_2";
-            this.textBox6_2.Size = new System.Drawing.Size(140, 20);
+            this.textBox6_2.Size = new System.Drawing.Size(138, 20);
             this.textBox6_2.TabIndex = 13;
             this.textBox6_2.TextChanged += new System.EventHandler(this.textBox6_2_TextChanged);
             // 
@@ -218,18 +218,10 @@
             this.textBox7_1.TabIndex = 14;
             this.textBox7_1.TextChanged += new System.EventHandler(this.textBox7_1_TextChanged);
             // 
-            // textBox7_2
-            // 
-            this.textBox7_2.Location = new System.Drawing.Point(150, 147);
-            this.textBox7_2.Name = "textBox7_2";
-            this.textBox7_2.Size = new System.Drawing.Size(140, 20);
-            this.textBox7_2.TabIndex = 15;
-            this.textBox7_2.TextChanged += new System.EventHandler(this.textBox7_2_TextChanged);
-            // 
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(296, 51);
+            this.comboBox3.Location = new System.Drawing.Point(293, 51);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(121, 21);
             this.comboBox3.TabIndex = 16;
@@ -238,7 +230,7 @@
             // comboBox4
             // 
             this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(296, 75);
+            this.comboBox4.Location = new System.Drawing.Point(293, 75);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(121, 21);
             this.comboBox4.TabIndex = 17;
@@ -247,7 +239,7 @@
             // comboBox5
             // 
             this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(296, 99);
+            this.comboBox5.Location = new System.Drawing.Point(293, 99);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(121, 21);
             this.comboBox5.TabIndex = 18;
@@ -256,7 +248,7 @@
             // comboBox6
             // 
             this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Location = new System.Drawing.Point(296, 123);
+            this.comboBox6.Location = new System.Drawing.Point(293, 123);
             this.comboBox6.Name = "comboBox6";
             this.comboBox6.Size = new System.Drawing.Size(121, 21);
             this.comboBox6.TabIndex = 19;
@@ -265,11 +257,19 @@
             // comboBox7
             // 
             this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Location = new System.Drawing.Point(296, 147);
+            this.comboBox7.Location = new System.Drawing.Point(293, 147);
             this.comboBox7.Name = "comboBox7";
             this.comboBox7.Size = new System.Drawing.Size(121, 21);
             this.comboBox7.TabIndex = 20;
             this.comboBox7.SelectedIndexChanged += new System.EventHandler(this.comboBox7_SelectedIndexChanged);
+            // 
+            // textBox7_2
+            // 
+            this.textBox7_2.Location = new System.Drawing.Point(149, 147);
+            this.textBox7_2.Name = "textBox7_2";
+            this.textBox7_2.Size = new System.Drawing.Size(138, 20);
+            this.textBox7_2.TabIndex = 15;
+            this.textBox7_2.TextChanged += new System.EventHandler(this.textBox7_2_TextChanged);
             // 
             // label1
             // 
