@@ -90,11 +90,14 @@ namespace ClipboardManager
 
             // Handle the DoubleClick event to activate the form.
             notifyIcon.DoubleClick += new System.EventHandler(this.NotifyIcon_Open);
+            
         }
 
         //Set Application to start hidden
         protected override void OnLoad(EventArgs e)
         {
+            //Setting the Windows to SizableToolWindow will make it disappear from ALT+TAB
+            this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
             Visible = false;
             Opacity = 0.00;
 
@@ -102,16 +105,14 @@ namespace ClipboardManager
         }
         private void NotifyIcon_Open(object Sender, EventArgs e)
         {
-            // Show the form when the user double clicks on the notify icon.
-
             // Set the WindowState to normal if the form is minimized.
             if (this.WindowState == FormWindowState.Minimized)
                 this.WindowState = FormWindowState.Normal;
 
-            // Activate the form and show it if it was previously hidden.
+            //Setting the Windows to Sizable will make it appear in ALT+TAB again
+            this.FormBorderStyle = FormBorderStyle.Sizable;
             Visible = true;
             Opacity = 1.00;
-            this.Show();
             this.Activate();
         }
         private void NotifyIcon_Exit(object Sender, EventArgs e)
