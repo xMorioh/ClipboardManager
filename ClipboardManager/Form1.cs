@@ -18,30 +18,37 @@ namespace ClipboardManager
             InitializeComponent();
 
             //Load all User saved Components
+            textBox1_0.Text = Properties.Settings.Default.textBox1_0;
             textBox1_1.Text = Properties.Settings.Default.textBox1_1;
             textBox1_2.Text = Properties.Settings.Default.textBox1_2;
             comboBox1.Text = Properties.Settings.Default.comboBox1;
 
+            textBox2_0.Text = Properties.Settings.Default.textBox2_0;
             textBox2_1.Text = Properties.Settings.Default.textBox2_1;
             textBox2_2.Text = Properties.Settings.Default.textBox2_2;
             comboBox2.Text = Properties.Settings.Default.comboBox2;
 
+            textBox3_0.Text = Properties.Settings.Default.textBox3_0;
             textBox3_1.Text = Properties.Settings.Default.textBox3_1;
             textBox3_2.Text = Properties.Settings.Default.textBox3_2;
             comboBox3.Text = Properties.Settings.Default.comboBox3;
 
+            textBox4_0.Text = Properties.Settings.Default.textBox4_0;
             textBox4_1.Text = Properties.Settings.Default.textBox4_1;
             textBox4_2.Text = Properties.Settings.Default.textBox4_2;
             comboBox4.Text = Properties.Settings.Default.comboBox4;
 
+            textBox5_0.Text = Properties.Settings.Default.textBox5_0;
             textBox5_1.Text = Properties.Settings.Default.textBox5_1;
             textBox5_2.Text = Properties.Settings.Default.textBox5_2;
             comboBox5.Text = Properties.Settings.Default.comboBox5;
 
+            textBox6_0.Text = Properties.Settings.Default.textBox6_0;
             textBox6_1.Text = Properties.Settings.Default.textBox6_1;
             textBox6_2.Text = Properties.Settings.Default.textBox6_2;
             comboBox6.Text = Properties.Settings.Default.comboBox6;
 
+            textBox7_0.Text = Properties.Settings.Default.textBox7_0;
             textBox7_1.Text = Properties.Settings.Default.textBox7_1;
             textBox7_2.Text = Properties.Settings.Default.textBox7_2;
             comboBox7.Text = Properties.Settings.Default.comboBox7;
@@ -153,7 +160,7 @@ namespace ClipboardManager
             }
         }
 
-        //Trimming Algorhithms START
+        //-----Trimming Algorhithms START-----
         //Trim To End Of Line including the content to trim
         protected string ContentTrimToEnd(string OriginalContent, string ContentToExchange)
         {
@@ -170,7 +177,7 @@ namespace ClipboardManager
             OriginalContent = OriginalContent.Replace(ContentToExchange, ContentToBeExchangedWith);
             return OriginalContent;
         }
-        //Trimming Algorhithms END
+        //Trimming Algorhithms END-----
 
         protected override void WndProc(ref System.Windows.Forms.Message m)
         {
@@ -179,39 +186,45 @@ namespace ClipboardManager
             switch (m.Msg)
             {
                 case WM_DRAWCLIPBOARD:
+                    string[] TextBoxes0Content = new string[] { textBox1_0.Text, textBox2_0.Text, textBox3_0.Text, textBox4_0.Text, textBox5_0.Text, textBox6_0.Text, textBox7_0.Text };
                     string[] TextBoxes1Content = new string[] { textBox1_1.Text, textBox2_1.Text, textBox3_1.Text, textBox4_1.Text, textBox5_1.Text, textBox6_1.Text, textBox7_1.Text };
                     string[] TextBoxes2Content = new string[] { textBox1_2.Text, textBox2_2.Text, textBox3_2.Text, textBox4_2.Text, textBox5_2.Text, textBox6_2.Text, textBox7_2.Text };
                     string[] ComboBoxesContent = new string[] { comboBox1.Text, comboBox2.Text, comboBox3.Text, comboBox4.Text, comboBox5.Text, comboBox6.Text, comboBox7.Text };
 
                     for (var i = 0; i < TextBoxes1Content.Length; i++)
                     {
-                        string Algorithm = ComboBoxesContent.GetValue(i).ToString();
+                        List<string> RequiredKeyList = TextBoxes0Content.GetValue(i).ToString().Split(',').ToList();
                         List<string> ContentToExchangeList = TextBoxes1Content.GetValue(i).ToString().Split(',').ToList();
                         string ContentToBeExchangedWith = TextBoxes2Content.GetValue(i).ToString();
+                        string Algorithm = ComboBoxesContent.GetValue(i).ToString();
 
                         string OriginalContent = Clipboard.GetText();
                         string ContentToExchangeInstance = ContentToExchangeList.Find(x => OriginalContent.Contains(x));
+                        string RequiredKeyInstance = RequiredKeyList.Find(x => OriginalContent.Contains(x));
 
-                        if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null && OriginalContent != string.Empty && OriginalContent != null)
+                        if (RequiredKeyInstance != null)
                         {
-                            //ContentTrimToEnd
-                            if (Algorithm == Algorhithms.GetValue(0).ToString())
+                            if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null && OriginalContent != string.Empty && OriginalContent != null)
                             {
-                                OriginalContent = ContentTrimToEnd(OriginalContent, ContentToExchangeInstance);
-                                if (OriginalContent != string.Empty && OriginalContent != null)
-                                    System.Windows.Forms.Clipboard.SetText(OriginalContent);
-                                else
-                                    System.Windows.Forms.Clipboard.Clear();
-                            }
+                                //ContentTrimToEnd
+                                if (Algorithm == Algorhithms.GetValue(1).ToString())
+                                {
+                                    OriginalContent = ContentTrimToEnd(OriginalContent, ContentToExchangeInstance);
+                                    if (OriginalContent != string.Empty && OriginalContent != null)
+                                        System.Windows.Forms.Clipboard.SetText(OriginalContent);
+                                    else
+                                        System.Windows.Forms.Clipboard.Clear();
+                                }
 
-                            //ContentReplace
-                            else if (Algorithm == Algorhithms.GetValue(1).ToString())
-                            {
-                                OriginalContent = ContentReplace(OriginalContent, ContentToExchangeInstance, ContentToBeExchangedWith);
-                                if (OriginalContent != string.Empty && OriginalContent != null)
-                                    System.Windows.Forms.Clipboard.SetText(OriginalContent);
-                                else
-                                    System.Windows.Forms.Clipboard.Clear();
+                                //ContentReplace
+                                else if (Algorithm == Algorhithms.GetValue(2).ToString())
+                                {
+                                    OriginalContent = ContentReplace(OriginalContent, ContentToExchangeInstance, ContentToBeExchangedWith);
+                                    if (OriginalContent != string.Empty && OriginalContent != null)
+                                        System.Windows.Forms.Clipboard.SetText(OriginalContent);
+                                    else
+                                        System.Windows.Forms.Clipboard.Clear();
+                                }
                             }
                         }
                     }
@@ -224,7 +237,7 @@ namespace ClipboardManager
 
 
         //FORM VARIABLES
-        public static string[] Algorhithms = new string[] { "ContentTrimToEnd", "ContentReplace" };
+        public static string[] Algorhithms = new string[] { "", "ContentTrimToEnd", "ContentReplace" };
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -240,6 +253,11 @@ namespace ClipboardManager
 
 
         //New Line
+        private void textBox1_0_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.textBox1_0 = textBox1_0.Text;
+            Properties.Settings.Default.Save();
+        }
         private void textBox1_1_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.textBox1_1 = textBox1_1.Text;
@@ -260,6 +278,11 @@ namespace ClipboardManager
 
 
         //New Line
+        private void textBox2_0_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.textBox2_0 = textBox2_0.Text;
+            Properties.Settings.Default.Save();
+        }
         private void textBox2_1_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.textBox2_1 = textBox2_1.Text;
@@ -279,6 +302,11 @@ namespace ClipboardManager
 
 
         //New Line
+        private void textBox3_0_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.textBox3_0 = textBox3_0.Text;
+            Properties.Settings.Default.Save();
+        }
         private void textBox3_1_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.textBox3_1 = textBox3_1.Text;
@@ -299,6 +327,11 @@ namespace ClipboardManager
 
 
         //New Line
+        private void textBox4_0_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.textBox4_0 = textBox4_0.Text;
+            Properties.Settings.Default.Save();
+        }
         private void textBox4_1_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.textBox4_1 = textBox4_1.Text;
@@ -319,6 +352,11 @@ namespace ClipboardManager
 
 
         //New Line
+        private void textBox5_0_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.textBox5_0 = textBox5_0.Text;
+            Properties.Settings.Default.Save();
+        }
         private void textBox5_1_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.textBox5_1 = textBox5_1.Text;
@@ -339,6 +377,11 @@ namespace ClipboardManager
 
 
         //New Line
+        private void textBox6_0_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.textBox6_0 = textBox6_0.Text;
+            Properties.Settings.Default.Save();
+        }
         private void textBox6_1_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.textBox6_1 = textBox6_1.Text;
@@ -359,6 +402,11 @@ namespace ClipboardManager
 
 
         //New Line
+        private void textBox7_0_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.textBox7_0 = textBox7_0.Text;
+            Properties.Settings.Default.Save();
+        }
         private void textBox7_1_TextChanged(object sender, EventArgs e)
         {
             Properties.Settings.Default.textBox7_1 = textBox7_1.Text;
