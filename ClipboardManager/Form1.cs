@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -97,7 +98,6 @@ namespace ClipboardManager
 
             // Handle the DoubleClick event to activate the form.
             notifyIcon.DoubleClick += new System.EventHandler(this.NotifyIcon_Open);
-            
         }
 
         //Set Application to start hidden
@@ -149,7 +149,7 @@ namespace ClipboardManager
                 Thread STAThread = new Thread(
                     delegate ()
                     {
-                        // Use a fully qualified name for Clipboard otherwise it will end up calling itself.
+                        //Use a fully qualified name for Clipboard otherwise it will end up calling itself.
                         ReturnValue = System.Windows.Forms.Clipboard.GetText();
                     });
                 STAThread.SetApartmentState(ApartmentState.STA);
@@ -160,7 +160,7 @@ namespace ClipboardManager
             }
         }
 
-        //-----Trimming Algorhithms START-----
+        //-----Algorhithms START-----
         //Trim To End Of Line including the content to trim
         protected string ContentTrimToEnd(string OriginalContent, string ContentToExchange)
         {
@@ -177,67 +177,85 @@ namespace ClipboardManager
             OriginalContent = OriginalContent.Replace(ContentToExchange, ContentToBeExchangedWith);
             return OriginalContent;
         }
-        //Trimming Algorhithms END-----
+
+        protected string ContentAddToEnd(string OriginalContent, string ContentToAdd)
+        {
+            OriginalContent += ContentToAdd;
+            return OriginalContent;
+        }
+        //-----Trimming Algorhithms END-----
 
         protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             const int WM_DRAWCLIPBOARD = 0x308;
-
-            switch (m.Msg)
+            if (m.Msg == WM_DRAWCLIPBOARD)
             {
-                case WM_DRAWCLIPBOARD:
-                    string[] TextBoxes0Content = new string[] { textBox1_0.Text, textBox2_0.Text, textBox3_0.Text, textBox4_0.Text, textBox5_0.Text, textBox6_0.Text, textBox7_0.Text };
-                    string[] TextBoxes1Content = new string[] { textBox1_1.Text, textBox2_1.Text, textBox3_1.Text, textBox4_1.Text, textBox5_1.Text, textBox6_1.Text, textBox7_1.Text };
-                    string[] TextBoxes2Content = new string[] { textBox1_2.Text, textBox2_2.Text, textBox3_2.Text, textBox4_2.Text, textBox5_2.Text, textBox6_2.Text, textBox7_2.Text };
-                    string[] ComboBoxesContent = new string[] { comboBox1.Text, comboBox2.Text, comboBox3.Text, comboBox4.Text, comboBox5.Text, comboBox6.Text, comboBox7.Text };
+                string[] TextBoxes0Content = new string[] { textBox1_0.Text, textBox2_0.Text, textBox3_0.Text, textBox4_0.Text, textBox5_0.Text, textBox6_0.Text, textBox7_0.Text };
+                string[] TextBoxes1Content = new string[] { textBox1_1.Text, textBox2_1.Text, textBox3_1.Text, textBox4_1.Text, textBox5_1.Text, textBox6_1.Text, textBox7_1.Text };
+                string[] TextBoxes2Content = new string[] { textBox1_2.Text, textBox2_2.Text, textBox3_2.Text, textBox4_2.Text, textBox5_2.Text, textBox6_2.Text, textBox7_2.Text };
+                string[] ComboBoxesContent = new string[] { comboBox1.Text, comboBox2.Text, comboBox3.Text, comboBox4.Text, comboBox5.Text, comboBox6.Text, comboBox7.Text };
+                string OriginalContent = null;
 
-                    for (var i = 0; i < TextBoxes1Content.Length; i++)
+                //Make sure to check if the content is in text format before doing anything
+                if (System.Windows.Forms.Clipboard.ContainsText() && !System.Windows.Forms.Clipboard.ContainsImage() && !System.Windows.Forms.Clipboard.ContainsAudio() && !System.Windows.Forms.Clipboard.ContainsFileDropList())
+                {
+                    OriginalContent = System.Windows.Forms.Clipboard.GetText();
+
+                    for (int i = 0; i < ComboBoxesContent.Length; i++)
                     {
+                        //Column Data
                         List<string> RequiredKeyList = TextBoxes0Content.GetValue(i).ToString().Split(',').ToList();
                         List<string> ContentToExchangeList = TextBoxes1Content.GetValue(i).ToString().Split(',').ToList();
-                        string ContentToBeExchangedWith = TextBoxes2Content.GetValue(i).ToString();
+                        string Modifier = TextBoxes2Content.GetValue(i).ToString();
                         string Algorithm = ComboBoxesContent.GetValue(i).ToString();
 
-                        string OriginalContent = Clipboard.GetText();
+                        //Converted Data for internal use
                         string ContentToExchangeInstance = ContentToExchangeList.Find(x => OriginalContent.Contains(x));
                         string RequiredKeyInstance = RequiredKeyList.Find(x => OriginalContent.Contains(x));
 
+                        //Start of Clipbaord Content handling
                         if (RequiredKeyInstance != null)
                         {
-                            if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null && OriginalContent != string.Empty && OriginalContent != null)
+                            if (OriginalContent != string.Empty && OriginalContent != null)
                             {
                                 //ContentTrimToEnd
                                 if (Algorithm == Algorhithms.GetValue(1).ToString())
                                 {
-                                    OriginalContent = ContentTrimToEnd(OriginalContent, ContentToExchangeInstance);
-                                    if (OriginalContent != string.Empty && OriginalContent != null)
-                                        System.Windows.Forms.Clipboard.SetText(OriginalContent);
-                                    else
-                                        System.Windows.Forms.Clipboard.Clear();
+                                    if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
+                                        OriginalContent = ContentTrimToEnd(OriginalContent, ContentToExchangeInstance);
                                 }
 
                                 //ContentReplace
                                 else if (Algorithm == Algorhithms.GetValue(2).ToString())
                                 {
-                                    OriginalContent = ContentReplace(OriginalContent, ContentToExchangeInstance, ContentToBeExchangedWith);
-                                    if (OriginalContent != string.Empty && OriginalContent != null)
-                                        System.Windows.Forms.Clipboard.SetText(OriginalContent);
-                                    else
-                                        System.Windows.Forms.Clipboard.Clear();
+                                    if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
+                                        OriginalContent = ContentReplace(OriginalContent, ContentToExchangeInstance, Modifier);
+                                }
+
+                                //ContentAddToEnd
+                                else if (Algorithm == Algorhithms.GetValue(3).ToString())
+                                {
+                                    //For some reason copying text from certain applications will make this Algorithm run several times
+                                    //therefore we check if it has run already, this issue may be present in the upper algorithms too, unsure how to test.
+                                    if (!OriginalContent.Contains(Modifier))
+                                        OriginalContent = ContentAddToEnd(OriginalContent, Modifier);
                                 }
                             }
                         }
                     }
-                    break;
-                default:
-                    base.WndProc(ref m);
-                    break;
+                    if (OriginalContent != string.Empty && OriginalContent != null)
+                        System.Windows.Forms.Clipboard.SetText(OriginalContent);
+                    else
+                        System.Windows.Forms.Clipboard.Clear();
+                }
             }
+            //Called for any unhandled messages
+            base.WndProc(ref m);
         }
 
 
         //FORM VARIABLES
-        public static string[] Algorhithms = new string[] { "", "ContentTrimToEnd", "ContentReplace" };
+        public static string[] Algorhithms = new string[] { "", "ContentTrimToEnd", "ContentReplace", "ContentAddToEnd" };
 
         private void Form1_Load(object sender, EventArgs e)
         {
