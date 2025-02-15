@@ -199,7 +199,7 @@ namespace ClipboardManager
                 //Make sure to check if the content is in text format before doing anything
                 if (System.Windows.Forms.Clipboard.ContainsText() && !System.Windows.Forms.Clipboard.ContainsImage() && !System.Windows.Forms.Clipboard.ContainsAudio() && !System.Windows.Forms.Clipboard.ContainsFileDropList())
                 {
-                    OriginalContent = System.Windows.Forms.Clipboard.GetText();
+                    OriginalContent = ClipboardManager.Form1.Clipboard.GetText();
 
                     for (int i = 0; i < ComboBoxesContent.Length; i++)
                     {
