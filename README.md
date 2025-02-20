@@ -38,7 +38,7 @@ Let's say you want to exchange a domain name in a link, then it is best to input
 The Application will start hidden by default, it will hide in the Tray Icons, you can open it again with a double click or right click and "Open", there you can also hide it again entirely or Exit the Application.
 <br>
 <br>
-To run this application via Windows autostart just make a shortcut and place it under WIN+R "shell:startup".
+To run this application via Windows autostart just create a new task in Windows Task Scheduler, make sure to set the Trigger to "On workstation unlock" and delay it by a few seconds if possible, then select this applications exe under Actions. Starting this application outside of a logged on and unlocked windows session will result in the application throwing an error which is currently a known issue with no solution yet.
 
 **Preview**:
 

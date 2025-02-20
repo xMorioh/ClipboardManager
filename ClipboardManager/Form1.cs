@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -17,6 +18,7 @@ namespace ClipboardManager
         public Form1()
         {
             InitializeComponent();
+            nextClipboardViewer = (IntPtr)SetClipboardViewer((int)this.Handle);
 
             //Load all User saved Components
             textBox1_0.Text = Properties.Settings.Default.textBox1_0;
@@ -125,6 +127,8 @@ namespace ClipboardManager
         private void NotifyIcon_Exit(object Sender, EventArgs e)
         {
             // Close the form, which closes the application and clears the NotifyIcon.
+            // Also remove the application from the Clipboard Listener again.
+            //RemoveClipboardFormatListener(this.Handle);
             notifyIcon.Visible = false;
             this.Close();
         }
@@ -135,30 +139,14 @@ namespace ClipboardManager
         }
 
 
+        [DllImport("User32.dll")]
+        protected static extern int SetClipboardViewer(int hWndNewViewer);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int SendMessage(IntPtr hwnd, int wMsg, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("User32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SetClipboardViewer(IntPtr hWndNewViewer);
-        private IntPtr _ClipboardViewerNext;
+        IntPtr nextClipboardViewer;
 
-        public static class Clipboard
-        {
-            public static string GetText()
-            {
-                string ReturnValue = string.Empty;
-                Thread STAThread = new Thread(
-                    delegate ()
-                    {
-                        //Use a fully qualified name for Clipboard otherwise it will end up calling itself.
-                        ReturnValue = System.Windows.Forms.Clipboard.GetText();
-                    });
-                STAThread.SetApartmentState(ApartmentState.STA);
-                STAThread.Start();
-                STAThread.Join();
-
-                return ReturnValue;
-            }
-        }
 
         //-----Algorhithms START-----
         //Trim To End Of Line including the content to trim
@@ -188,69 +176,75 @@ namespace ClipboardManager
         protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             const int WM_DRAWCLIPBOARD = 0x308;
-            if (m.Msg == WM_DRAWCLIPBOARD)
+            switch (m.Msg)
             {
-                string[] TextBoxes0Content = new string[] { textBox1_0.Text, textBox2_0.Text, textBox3_0.Text, textBox4_0.Text, textBox5_0.Text, textBox6_0.Text, textBox7_0.Text };
-                string[] TextBoxes1Content = new string[] { textBox1_1.Text, textBox2_1.Text, textBox3_1.Text, textBox4_1.Text, textBox5_1.Text, textBox6_1.Text, textBox7_1.Text };
-                string[] TextBoxes2Content = new string[] { textBox1_2.Text, textBox2_2.Text, textBox3_2.Text, textBox4_2.Text, textBox5_2.Text, textBox6_2.Text, textBox7_2.Text };
-                string[] ComboBoxesContent = new string[] { comboBox1.Text, comboBox2.Text, comboBox3.Text, comboBox4.Text, comboBox5.Text, comboBox6.Text, comboBox7.Text };
-                string OriginalContent = null;
+                case WM_DRAWCLIPBOARD:
+                    string[] TextBoxes0Content = new string[] { textBox1_0.Text, textBox2_0.Text, textBox3_0.Text, textBox4_0.Text, textBox5_0.Text, textBox6_0.Text, textBox7_0.Text };
+                    string[] TextBoxes1Content = new string[] { textBox1_1.Text, textBox2_1.Text, textBox3_1.Text, textBox4_1.Text, textBox5_1.Text, textBox6_1.Text, textBox7_1.Text };
+                    string[] TextBoxes2Content = new string[] { textBox1_2.Text, textBox2_2.Text, textBox3_2.Text, textBox4_2.Text, textBox5_2.Text, textBox6_2.Text, textBox7_2.Text };
+                    string[] ComboBoxesContent = new string[] { comboBox1.Text, comboBox2.Text, comboBox3.Text, comboBox4.Text, comboBox5.Text, comboBox6.Text, comboBox7.Text };
+                    string OriginalContent = string.Empty;
 
-                //Make sure to check if the content is in text format before doing anything
-                if (System.Windows.Forms.Clipboard.ContainsText() && !System.Windows.Forms.Clipboard.ContainsImage() && !System.Windows.Forms.Clipboard.ContainsAudio() && !System.Windows.Forms.Clipboard.ContainsFileDropList())
-                {
-                    OriginalContent = ClipboardManager.Form1.Clipboard.GetText();
-
-                    for (int i = 0; i < ComboBoxesContent.Length; i++)
+                    //Make sure to check if the content is in text format before doing anything
+                    if (System.Windows.Forms.Clipboard.ContainsText() && !System.Windows.Forms.Clipboard.ContainsImage() && !System.Windows.Forms.Clipboard.ContainsAudio() && !System.Windows.Forms.Clipboard.ContainsFileDropList())
                     {
-                        //Column Data
-                        List<string> RequiredKeyList = TextBoxes0Content.GetValue(i).ToString().Split(',').ToList();
-                        List<string> ContentToExchangeList = TextBoxes1Content.GetValue(i).ToString().Split(',').ToList();
-                        string Modifier = TextBoxes2Content.GetValue(i).ToString();
-                        string Algorithm = ComboBoxesContent.GetValue(i).ToString();
+                        OriginalContent = System.Windows.Forms.Clipboard.GetText();
 
-                        //Converted Data for internal use
-                        string ContentToExchangeInstance = ContentToExchangeList.Find(x => OriginalContent.Contains(x));
-                        string RequiredKeyInstance = RequiredKeyList.Find(x => OriginalContent.Contains(x));
-
-                        //Start of Clipbaord Content handling
-                        if (RequiredKeyInstance != null)
+                        for (int i = 0; i < ComboBoxesContent.Length; i++)
                         {
-                            if (OriginalContent != string.Empty && OriginalContent != null)
+                            //Column Data
+                            List<string> RequiredKeyList = TextBoxes0Content.GetValue(i).ToString().Split(',').ToList();
+                            List<string> ContentToExchangeList = TextBoxes1Content.GetValue(i).ToString().Split(',').ToList();
+                            string Modifier = TextBoxes2Content.GetValue(i).ToString();
+                            string Algorithm = ComboBoxesContent.GetValue(i).ToString();
+
+                            //Converted Column Data for internal use
+                            string ContentToExchangeInstance = ContentToExchangeList.Find(x => OriginalContent.Contains(x));
+                            string RequiredKeyInstance = RequiredKeyList.Find(x => OriginalContent.Contains(x));
+
+                            //Start of Clipbaord Content handling
+                            if (RequiredKeyInstance != null)
                             {
-                                //ContentTrimToEnd
-                                if (Algorithm == Algorhithms.GetValue(1).ToString())
+                                if (OriginalContent != string.Empty && OriginalContent != null)
                                 {
-                                    if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
-                                        OriginalContent = ContentTrimToEnd(OriginalContent, ContentToExchangeInstance);
-                                }
+                                    //ContentTrimToEnd
+                                    if (Algorithm == Algorhithms.GetValue(1).ToString())
+                                    {
+                                        if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
+                                            OriginalContent = ContentTrimToEnd(OriginalContent, ContentToExchangeInstance);
+                                    }
 
-                                //ContentReplace
-                                else if (Algorithm == Algorhithms.GetValue(2).ToString())
-                                {
-                                    if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
-                                        OriginalContent = ContentReplace(OriginalContent, ContentToExchangeInstance, Modifier);
-                                }
+                                    //ContentReplace
+                                    else if (Algorithm == Algorhithms.GetValue(2).ToString())
+                                    {
+                                        if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
+                                            OriginalContent = ContentReplace(OriginalContent, ContentToExchangeInstance, Modifier);
+                                    }
 
-                                //ContentAddToEnd
-                                else if (Algorithm == Algorhithms.GetValue(3).ToString())
-                                {
-                                    //For some reason copying text from certain applications will make this Algorithm run several times
-                                    //therefore we check if it has run already, this issue may be present in the upper algorithms too, unsure how to test.
-                                    if (!OriginalContent.Contains(Modifier))
-                                        OriginalContent = ContentAddToEnd(OriginalContent, Modifier);
+                                    //ContentAddToEnd
+                                    else if (Algorithm == Algorhithms.GetValue(3).ToString())
+                                    {
+                                        //For some reason copying text from certain applications will make this Algorithm run several times
+                                        //therefore we check if it has run already, this issue may be present in the upper algorithms too, unsure how to test.
+                                        if (!OriginalContent.Contains(Modifier))
+                                            OriginalContent = ContentAddToEnd(OriginalContent, Modifier);
+                                    }
                                 }
                             }
                         }
+                        if (OriginalContent != string.Empty && OriginalContent != null)
+                            //System.Windows.Forms.Clipboard.SetText(OriginalContent);
+                            System.Windows.Forms.Clipboard.SetDataObject(OriginalContent, true, 10, 100);
+                        else
+                            System.Windows.Forms.Clipboard.Clear();
                     }
-                    if (OriginalContent != string.Empty && OriginalContent != null)
-                        System.Windows.Forms.Clipboard.SetText(OriginalContent);
-                    else
-                        System.Windows.Forms.Clipboard.Clear();
-                }
+                    SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam);
+                    break;
+                default:
+                    //Called for any unhandled messages
+                    base.WndProc(ref m);
+                    break;
             }
-            //Called for any unhandled messages
-            base.WndProc(ref m);
         }
 
 
@@ -259,7 +253,6 @@ namespace ClipboardManager
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            _ClipboardViewerNext = SetClipboardViewer(this.Handle);
             comboBox1.Items.AddRange(Algorhithms);
             comboBox2.Items.AddRange(Algorhithms);
             comboBox3.Items.AddRange(Algorhithms);
