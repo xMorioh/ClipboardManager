@@ -38,7 +38,15 @@ Let's say you want to exchange a domain name in a link, then it is best to input
 The Application will start hidden by default, it will hide in the Tray Icons, you can open it again with a double click or right click and "Open", there you can also hide it again entirely or Exit the Application.
 <br>
 <br>
-To run this application via Windows autostart just create a new task in Windows Task Scheduler, make sure to set the Trigger to "On workstation unlock" and delay it by a few seconds if possible, then select this applications exe under Actions. Starting this application outside of a logged on and unlocked windows session will result in the application throwing an error which is currently a known issue with no solution yet.
+To run this application via Windows autostart just create a new task in Windows Task Scheduler for it.
+<br>
+<br>
+
+**Known Bugs**:
+<br>
+When the application is started and sometimes when running in the background and the User is not logged in to their Desktop session or it's locked, then the application could occasionally throw an error "Requested Clipboard operation did not succeed". This is being catched and logged under "C:\Users\%username%\AppData\Local\Morioh\ClipboardManager\Logging". There is currently no fix for this. If the occurance in the Log is rappidly repeating in short time intervals then make sure to close the application and report this as a bug in this Repository here and include your running processes in the bug report as this bug is probably caused by interactions from or to other applications.
+<br>
+<br>
 
 **Preview**:
 

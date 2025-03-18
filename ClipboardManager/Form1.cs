@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
@@ -128,7 +129,6 @@ namespace ClipboardManager
         {
             // Close the form, which closes the application and clears the NotifyIcon.
             // Also remove the application from the Clipboard Listener again.
-            //RemoveClipboardFormatListener(this.Handle);
             notifyIcon.Visible = false;
             this.Close();
         }
@@ -184,59 +184,70 @@ namespace ClipboardManager
                     string[] TextBoxes2Content = new string[] { textBox1_2.Text, textBox2_2.Text, textBox3_2.Text, textBox4_2.Text, textBox5_2.Text, textBox6_2.Text, textBox7_2.Text };
                     string[] ComboBoxesContent = new string[] { comboBox1.Text, comboBox2.Text, comboBox3.Text, comboBox4.Text, comboBox5.Text, comboBox6.Text, comboBox7.Text };
                     string OriginalContent = string.Empty;
-
-                    //Make sure to check if the content is in text format before doing anything
-                    if (System.Windows.Forms.Clipboard.ContainsText() && !System.Windows.Forms.Clipboard.ContainsImage() && !System.Windows.Forms.Clipboard.ContainsAudio() && !System.Windows.Forms.Clipboard.ContainsFileDropList())
+                    try
                     {
-                        OriginalContent = System.Windows.Forms.Clipboard.GetText();
-
-                        for (int i = 0; i < ComboBoxesContent.Length; i++)
+                        //Make sure to check if the content is in text format before doing anything
+                        if (System.Windows.Forms.Clipboard.ContainsText() && !System.Windows.Forms.Clipboard.ContainsImage() && !System.Windows.Forms.Clipboard.ContainsAudio() && !System.Windows.Forms.Clipboard.ContainsFileDropList())
                         {
-                            //Column Data
-                            List<string> RequiredKeyList = TextBoxes0Content.GetValue(i).ToString().Split(',').ToList();
-                            List<string> ContentToExchangeList = TextBoxes1Content.GetValue(i).ToString().Split(',').ToList();
-                            string Modifier = TextBoxes2Content.GetValue(i).ToString();
-                            string Algorithm = ComboBoxesContent.GetValue(i).ToString();
+                            OriginalContent = System.Windows.Forms.Clipboard.GetText();
 
-                            //Converted Column Data for internal use
-                            string ContentToExchangeInstance = ContentToExchangeList.Find(x => OriginalContent.Contains(x));
-                            string RequiredKeyInstance = RequiredKeyList.Find(x => OriginalContent.Contains(x));
-
-                            //Start of Clipbaord Content handling
-                            if (RequiredKeyInstance != null)
+                            for (int i = 0; i < ComboBoxesContent.Length; i++)
                             {
-                                if (OriginalContent != string.Empty && OriginalContent != null)
+                                //Column Data
+                                List<string> RequiredKeyList = TextBoxes0Content.GetValue(i).ToString().Split(',').ToList();
+                                List<string> ContentToExchangeList = TextBoxes1Content.GetValue(i).ToString().Split(',').ToList();
+                                string Modifier = TextBoxes2Content.GetValue(i).ToString();
+                                string Algorithm = ComboBoxesContent.GetValue(i).ToString();
+
+                                //Converted Column Data for internal use
+                                string ContentToExchangeInstance = ContentToExchangeList.Find(x => OriginalContent.Contains(x));
+                                string RequiredKeyInstance = RequiredKeyList.Find(x => OriginalContent.Contains(x));
+
+                                //Start of Clipbaord Content handling
+                                if (RequiredKeyInstance != null)
                                 {
-                                    //ContentTrimToEnd
-                                    if (Algorithm == Algorhithms.GetValue(1).ToString())
+                                    if (OriginalContent != string.Empty && OriginalContent != null)
                                     {
-                                        if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
-                                            OriginalContent = ContentTrimToEnd(OriginalContent, ContentToExchangeInstance);
-                                    }
+                                        //ContentTrimToEnd
+                                        if (Algorithm == Algorhithms.GetValue(1).ToString())
+                                        {
+                                            if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
+                                                OriginalContent = ContentTrimToEnd(OriginalContent, ContentToExchangeInstance);
+                                        }
 
-                                    //ContentReplace
-                                    else if (Algorithm == Algorhithms.GetValue(2).ToString())
-                                    {
-                                        if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
-                                            OriginalContent = ContentReplace(OriginalContent, ContentToExchangeInstance, Modifier);
-                                    }
+                                        //ContentReplace
+                                        else if (Algorithm == Algorhithms.GetValue(2).ToString())
+                                        {
+                                            if (ContentToExchangeInstance != string.Empty && ContentToExchangeInstance != null)
+                                                OriginalContent = ContentReplace(OriginalContent, ContentToExchangeInstance, Modifier);
+                                        }
 
-                                    //ContentAddToEnd
-                                    else if (Algorithm == Algorhithms.GetValue(3).ToString())
-                                    {
-                                        //For some reason copying text from certain applications will make this Algorithm run several times
-                                        //therefore we check if it has run already, this issue may be present in the upper algorithms too, unsure how to test.
-                                        if (!OriginalContent.Contains(Modifier))
-                                            OriginalContent = ContentAddToEnd(OriginalContent, Modifier);
+                                        //ContentAddToEnd
+                                        else if (Algorithm == Algorhithms.GetValue(3).ToString())
+                                        {
+                                            //For some reason copying text from certain applications will make this Algorithm run several times
+                                            //therefore we check if it has run already, this issue may be present in the upper algorithms too, unsure how to test.
+                                            if (!OriginalContent.Contains(Modifier))
+                                                OriginalContent = ContentAddToEnd(OriginalContent, Modifier);
+                                        }
                                     }
                                 }
                             }
+                            if (OriginalContent != string.Empty && OriginalContent != null)
+                                //System.Windows.Forms.Clipboard.SetText(OriginalContent);
+                                System.Windows.Forms.Clipboard.SetDataObject(OriginalContent, true, 10, 100);
+                            else
+                                System.Windows.Forms.Clipboard.Clear();
                         }
-                        if (OriginalContent != string.Empty && OriginalContent != null)
-                            //System.Windows.Forms.Clipboard.SetText(OriginalContent);
-                            System.Windows.Forms.Clipboard.SetDataObject(OriginalContent, true, 10, 100);
-                        else
-                            System.Windows.Forms.Clipboard.Clear();
+                    }
+                    catch (Exception ex)
+                    {
+                        var directory = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                        directory += "\\Morioh\\ClipboardManager\\Logging\\";
+                        Directory.CreateDirectory(Path.GetDirectoryName(directory));
+
+                        string Logfile = directory + "ErrorLog.log";
+                        File.AppendAllText(Logfile, DateTime.Now.ToString("yyyy-MM-dd@HH:mm:ss") + ": " + ex.Message + "\n" + ex.ToString() + "\n");
                     }
                     SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam);
                     break;
