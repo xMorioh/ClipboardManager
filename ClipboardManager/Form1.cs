@@ -103,15 +103,24 @@ namespace ClipboardManager
             notifyIcon.DoubleClick += new System.EventHandler(this.NotifyIcon_Open);
         }
 
-        //Set Application to start hidden
+        //Set Application to start hidden on "OnLoad" and on "OnShown"
         protected override void OnLoad(EventArgs e)
         {
             //Setting the Windows to SizableToolWindow will make it disappear from ALT+TAB
             this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
             Visible = false;
             Opacity = 0.00;
-
+    
             base.OnLoad(e);
+        }
+        protected override void OnShown(EventArgs e)
+        {
+            //Setting the Windows to SizableToolWindow will make it disappear from ALT+TAB
+            this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
+            Visible = false;
+            Opacity = 0.00;
+
+            base.OnShown(e);
         }
         private void NotifyIcon_Open(object Sender, EventArgs e)
         {
